@@ -64,7 +64,7 @@ public class Converter {
      */
     private static final CSVFormat CSV_FILE_FORMAT = CSVFormat.DEFAULT
             .withHeader("tier1code", "tier2code", "tier3code", "description")
-            .withQuoteMode(QuoteMode.ALL);
+            .withQuoteMode(QuoteMode.NON_NUMERIC);
 
     public Converter() {
         //You can put the cameocode txt file in the resources directory before compiling
@@ -97,6 +97,10 @@ public class Converter {
 
                     for (String code : splitCode) {
                         csvPrinter.print(Integer.valueOf(code));
+                    }
+                    
+                    for (int i = splitCode.size(); i < 3; i++) {
+                        csvPrinter.print(null);
                     }
 
                     //For consistency, convert everything to lower case.  It can 
