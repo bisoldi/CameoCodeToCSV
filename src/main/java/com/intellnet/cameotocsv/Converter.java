@@ -68,7 +68,7 @@ public class Converter {
             .withQuoteMode(QuoteMode.ALL)
             .withTrim();
     
-    private static final String filename = System.getProperty("user.home") + "/camecodes.csv";
+    private static final String filename = System.getProperty("user.home") + "/cameocodes.csv";
     
 
     public Converter() {
