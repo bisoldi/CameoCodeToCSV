@@ -64,7 +64,8 @@ public class Converter {
      */
     private static final CSVFormat CSV_FILE_FORMAT = CSVFormat.DEFAULT
             .withHeader("tier1code", "tier2code", "tier3code", "description")
-            .withQuoteMode(QuoteMode.ALL);
+            .withQuoteMode(QuoteMode.ALL)
+            .withTrim();
 
     public Converter() {
         //You can put the cameocode txt file in the resources directory before compiling
