@@ -28,6 +28,7 @@ package com.intellnet.cameotocsv;
 
 import com.google.common.base.Splitter;
 import java.io.BufferedReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -66,10 +67,14 @@ public class Converter {
             .withHeader("tier1code", "tier2code", "tier3code", "description")
             .withQuoteMode(QuoteMode.ALL)
             .withTrim();
+    
+    private static final String filename = System.getProperty("user.home") + "/camecodes.csv";
+    
 
     public Converter() {
         //You can put the cameocode txt file in the resources directory before compiling
-        InputStream input = this.getClass().getClassLoader().getResourceAsStream("cameocodes.txt");
+//        InputStream input = this.getClass().getClassLoader().getResourceAsStream("cameocodes.txt");
+        InputStream input = null;
 
         if (input == null) {
             try {
@@ -82,12 +87,23 @@ public class Converter {
                 LOG.error(ex);
             }
         }
+        
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter(filename);
+        } catch (IOException ex) {
+            LOG.error(ex);
+            throw new RuntimeException(ex);
+        }
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-                CSVPrinter csvPrinter = new CSVPrinter(System.out, CSV_FILE_FORMAT)) {
+                CSVPrinter csvPrinter = new CSVPrinter(fileWriter, CSV_FILE_FORMAT)) {
 
             String json = null;
-
+            
+            //Skip over the first line
+            reader.readLine();
+            
             while ((json = reader.readLine()) != null) {
                 Matcher codeMatcher = CODE_MATCHER.matcher(json);
                 Matcher descMatcher = CODE_DESCRIPTION_MATCHER.matcher(json);
